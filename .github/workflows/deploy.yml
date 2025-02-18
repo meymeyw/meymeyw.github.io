@@ -16,7 +16,6 @@ jobs:
 
       - name: Setup Node
         uses: actions/setup-node@v4
-        working-directory: ./vite-project
         with:
           node-version: 20
           cache: 'npm'
