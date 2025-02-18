@@ -9,9 +9,6 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./vite-project
 
     steps:
       - name: Checkout repo
@@ -19,6 +16,7 @@ jobs:
 
       - name: Setup Node
         uses: actions/setup-node@v4
+        working-directory: ./vite-project
         with:
           node-version: 20
           cache: 'npm'
