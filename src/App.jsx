@@ -59,6 +59,7 @@ function ProjectDialog({ project, onClose }) {
 function App() {
   const [activeTag, setActiveTag] = useState('All')
   const [selectedProject, setSelectedProject] = useState(null)
+  const [projectView, setProjectView] = useState('cards')
   const [theme, setTheme] = useState(readSavedTheme)
   const tags = useMemo(() => ['All', ...new Set(projects.flatMap(({ tags: itemTags }) => itemTags))], [])
   const filteredProjects = activeTag === 'All'
@@ -100,21 +101,37 @@ function App() {
             <p className="eyebrow">The archive</p>
             <h2 id="work-heading">Selected work <span className="count">{String(filteredProjects.length).padStart(2, '0')}</span></h2>
           </div>
-          <div className="filters" aria-label="Filter projects by category">
-            {tags.map((tag) => (
+          <div className="section-tools">
+            <div className="filters" aria-label="Filter projects by category">
+              {tags.map((tag) => (
+                <button
+                  className={`filter-chip${activeTag === tag ? ' selected' : ''}`}
+                  key={tag}
+                  onClick={() => setActiveTag(tag)}
+                  aria-pressed={activeTag === tag}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+            <div className="view-toggle" role="group" aria-label="Selected work layout">
               <button
-                className={`filter-chip${activeTag === tag ? ' selected' : ''}`}
-                key={tag}
-                onClick={() => setActiveTag(tag)}
-                aria-pressed={activeTag === tag}
-              >
-                {tag}
-              </button>
-            ))}
+                className={projectView === 'cards' ? 'active' : ''}
+                aria-label="Card view"
+                aria-pressed={projectView === 'cards'}
+                onClick={() => setProjectView('cards')}
+              >▦</button>
+              <button
+                className={projectView === 'list' ? 'active' : ''}
+                aria-label="List view"
+                aria-pressed={projectView === 'list'}
+                onClick={() => setProjectView('list')}
+              >☷</button>
+            </div>
           </div>
         </div>
 
-        <div className="project-grid">
+        <div className={`project-grid${projectView === 'list' ? ' list-view' : ''}`}>
           {filteredProjects.map((project, index) => (
             <button className="project-card" key={project.id} onClick={() => setSelectedProject(project)}>
               <span className={`project-art ${project.art}`}>
